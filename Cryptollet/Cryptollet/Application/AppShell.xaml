@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:wallet="clr-namespace:Cryptollet.Modules.Wallet"
+       xmlns:assets="clr-namespace:Cryptollet.Modules.Assets"
+       xmlns:transactions="clr-namespace:Cryptollet.Modules.Transactions"
+       xmlns:controls="clr-namespace:Cryptollet.Common.Controls"
+       Title="Cryptollet"
+       x:Class="Cryptollet.AppShell"
+       FlyoutBackgroundColor="LightSlateGray"
+       FlyoutHeaderBehavior="CollapseOnScroll"
+       FlyoutVerticalScrollMode="Enabled">
+
+    <Shell.Resources>
+        <Style x:Key="BaseStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="Shell.ForegroundColor" Value="White"/>
+            <Setter Property="Shell.TitleColor" Value="White"/>
+            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF"/>
+        </Style>
+        <Style x:Key="DepositedShell" TargetType="Element" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource DepositedTab}"/>
+        </Style>
+        <Style x:Key="WithdrawnShell" TargetType="Element" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource WithdrawnTab}" />
+        </Style>
+    </Shell.Resources>
+
+    <Shell.FlyoutHeader>
+        <controls:FlyoutHeader/>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems"
+                Style="{StaticResource BaseStyle}"
+                Route="WalletViewModel">
+        <ShellContent Title="Portfolio" ContentTemplate="{DataTemplate wallet:WalletView}"></ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems"        
+        Style="{StaticResource BaseStyle}">
+        <ShellContent Title="Assets" ContentTemplate="{DataTemplate assets:AssetsView}"></ShellContent>
+    </FlyoutItem>
+    
+    <FlyoutItem FlyoutDisplayOptions="AsSingleItem" Title="Transactions">
+        <Tab Icon="all_tab.png"
+             Title="All Transactions"
+             Style="{StaticResource BaseStyle}">
+        <ShellContent ContentTemplate="{DataTemplate transactions:TransactionsView}"></ShellContent>
+        </Tab>
+        <Tab Icon="deposited_tab.png"
+             Title="Deposited"  
+             Style="{StaticResource DepositedShell}"
+              Route="deposited">
+            <ShellContent ContentTemplate="{DataTemplate transactions:DepositedTransactionsView}"/>
+        </Tab>
+        <Tab Icon="withdrawn_tab.png"
+             Title="Withdrawn"
+             Style="{StaticResource WithdrawnShell}">
+            <ShellContent ContentTemplate="{DataTemplate transactions:WithdrawnTransactionsView}"/>
+        </Tab>
+    </FlyoutItem>
+    <MenuItem Text="Logout" Command="{Binding SignOutCommand}"/>
+</Shell>
