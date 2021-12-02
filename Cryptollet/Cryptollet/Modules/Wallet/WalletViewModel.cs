@@ -6,8 +6,8 @@ using System.Windows.Input;
 using Cryptollet.Common.Base;
 using Cryptollet.Common.Controllers;
 using Cryptollet.Common.Models;
-//using Cryptollet.Common.Navigation;
-//using Cryptollet.Modules.AddTransaction;
+using Cryptollet.Common.Navigation;
+using Cryptollet.Modules.AddTransaction;
 using Microcharts;
 using SkiaSharp;
 using Xamarin.Forms;
@@ -16,13 +16,13 @@ namespace Cryptollet.Modules.Wallet
 {
     public class WalletViewModel : BaseViewModel
     {
-       // private INavigationService _navigationService;
+        private INavigationService _navigationService;
         private IWalletController _walletController;
 
-        public WalletViewModel(/*INavigationService navigationService,*/
+        public WalletViewModel(INavigationService navigationService,
                                IWalletController walletController)
         {
-          //  _navigationService = navigationService;
+            _navigationService = navigationService;
             _walletController = walletController;
             Assets = new ObservableCollection<Coin>();
             LatestTransactions = new ObservableCollection<Transaction>();
@@ -154,7 +154,7 @@ namespace Cryptollet.Modules.Wallet
 
         private async Task AddNewTransaction()
         {
-           // await _navigationService.PushAsync<AddTransactionViewModel>();
+           await _navigationService.PushAsync<AddTransactionViewModel>();
         }
     }
 }
