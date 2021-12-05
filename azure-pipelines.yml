@@ -16,7 +16,7 @@ jobs:
 - job:BuildAndroid
   displayName:"Build Android App"
 
-  steps: 
+steps:
 
   - task: NuGetToolInstaller@1
 
@@ -32,7 +32,8 @@ jobs:
 
 - job: BuildiOS
   displayName:"Build iOS App"
-  steps:
+
+steps:
 
   - task: NuGetToolInstaller@1
 
