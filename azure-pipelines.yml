@@ -8,8 +8,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
-  solutionName: 'Cryptollet.sln'
-  androidProject: 'Cryptollet.Android/Cryptollet.Android.csproj'
+  solutionName: 'Cryptollet/Cryptollet.sln'
+  androidProject: 'Cryptollet/Cryptollet.Android/Cryptollet.Android.csproj'
 
 jobs:
 
