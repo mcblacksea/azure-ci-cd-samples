@@ -13,8 +13,8 @@ variables:
 
 jobs:
 
-- job:BuildAndroid
-  displayName:'Build Android App'
+- job: BuildAndroid
+  displayName: 'Build Android App'
 
   steps:
 
@@ -29,8 +29,10 @@ jobs:
         projectFile: $(androidProject)
         outputDirectory: '$(outputDirectory)'
         configuration: '$(buildConfiguration)'
-- job:BuildiOS
-  displayName:'Build iOS App'
+
+
+- job: BuildiOS
+  displayName: 'Build iOS App'
 
   steps:
 
