@@ -119,7 +119,7 @@ namespace Cryptollet.Modules.AddTransaction
             }
             if (SelectedCoin == null)
             {
-               // await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
+                await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
                 return;
             }
             IsBusy = true;
