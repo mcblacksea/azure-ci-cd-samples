@@ -73,3 +73,22 @@ jobs:
       command: 'test'
       projects: $(testProject)
       configuration: '$(buildConfiguration)'
+
+- job: AndroidBeta
+  displayName: 'Release Android Beta'
+  dependsOn: [BuildAndroid, RunTests]
+
+  steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: AndroidApk
+
+    - task: AppCenterDistribute@3
+      inputs:
+        serverEndpoint: 'App Center'
+        appSlug: 'Longimanus/Cryptollet-1'
+        appFile: '$(Pipeline.Workspace)/com.companyname.cryptollet.apk'
+        releaseNotesOption: 'file'
+        releaseNotesFile: 'releasenotes.txt'
+        destinationType: 'groups'
+        distributionGroupId: '1a9dc800-5de5-4df1-bfb6-5ddc1177394a'
