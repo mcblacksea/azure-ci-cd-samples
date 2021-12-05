@@ -10,6 +10,7 @@ variables:
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
   solutionName: 'Cryptollet/Cryptollet.sln'
   androidProject: 'Cryptollet/Cryptollet.Android/Cryptollet.Android.csproj'
+  testProject: 'Cryptollet/Cryptollet.Tests/Cryptollet.Tests.csproj'
 
 jobs:
 
@@ -49,3 +50,13 @@ jobs:
         packageApp: false
         buildForSimulator: true
         runNugetRestore: false
+
+- job: RunTests
+  displayName: 'Run unit tests'
+
+  steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: $(testProject)
+      configuration: '$(buildConfiguration)'
