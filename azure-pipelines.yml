@@ -41,7 +41,7 @@ jobs:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'Cryptollet.Android/obj/Release/android/bin/com.companyname.cryptollet.apk'
+        targetPath: 'Cryptollet/Cryptollet.Android/obj/Release/android/bin/com.companyname.cryptollet.apk'
         artifactName: AndroidApk
 
 
