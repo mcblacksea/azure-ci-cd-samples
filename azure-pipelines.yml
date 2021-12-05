@@ -16,35 +16,35 @@ jobs:
 - job:BuildAndroid
   displayName:"Build Android App"
 
-steps:
+  steps:
 
-  - task: NuGetToolInstaller@1
+    - task: NuGetToolInstaller@1
 
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solutionName)'
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solutionName)'
 
-  - task: XamarinAndroid@1
-    inputs:
-      projectFile: $(androidProject)
-      outputDirectory: '$(outputDirectory)'
-      configuration: '$(buildConfiguration)'
+    - task: XamarinAndroid@1
+      inputs:
+        projectFile: $(androidProject)
+        outputDirectory: '$(outputDirectory)'
+        configuration: '$(buildConfiguration)'
 
 - job: BuildiOS
   displayName:"Build iOS App"
 
-steps:
+  steps:
 
-  - task: NuGetToolInstaller@1
+    - task: NuGetToolInstaller@1
 
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solutionName)'
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solutionName)'
 
-  - task: XamariniOS@2
-    inputs:
-      solutionFile: '$(solutionName)'
-      configuration: '$(buildConfiguration)'
-      packageApp: false
-      buildForSimulator: true
-      runNugetRestore: false
+    - task: XamariniOS@2
+      inputs:
+        solutionFile: '$(solutionName)'
+        configuration: '$(buildConfiguration)'
+        packageApp: false
+        buildForSimulator: true
+        runNugetRestore: false
