@@ -77,7 +77,7 @@ stages:
           configuration: '$(buildConfiguration)'
           packageApp: true
           buildForSimulator: false
-          runNugetRestore: false
+          runNugetRestore: true
           signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
           signingProvisioningProfileID: '$(APPLE_PROV_PROFILE_UUID)'
 
