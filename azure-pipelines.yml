@@ -69,7 +69,7 @@ stages:
       - task: InstallAppleProvisioningProfile@1
         inputs:
           provisioningProfileLocation: 'secureFiles'
-          provProfileSecureFile: 'AppStore_2021_12_06.mobileprovision'
+          provProfileSecureFile: 'Ad_Hoc_2021_12_06.mobileprovision'
 
       - task: XamariniOS@2
         inputs:
