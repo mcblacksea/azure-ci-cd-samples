@@ -60,13 +60,32 @@ stages:
         inputs:
           restoreSolution: '$(solutionName)'
 
+      - task: InstallAppleCertificate@2
+        inputs:
+          certSecureFile: 'Certificates.p12'
+          certPwd: '$(keystorePassword)'
+          keychain: 'temp'
+
+      - task: InstallAppleProvisioningProfile@1
+        inputs:
+          provisioningProfileLocation: 'secureFiles'
+          provProfileSecureFile: 'AppStore_2021_12_06.mobileprovision'
+
       - task: XamariniOS@2
         inputs:
           solutionFile: '$(solutionName)'
           configuration: '$(buildConfiguration)'
-          packageApp: false
-          buildForSimulator: true
+          packageApp: true
+          buildForSimulator: false
           runNugetRestore: false
+          signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+          signingProvisioningProfileID: '$(APPLE_PROV_PROFILE_UUID)'
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: 'Cryptollet/Cryptollet.iOS/bin/iPhone/Release/Cryptollet.iOS.ipa'
+          artifactName: iOSIpa
+
 
   - job: RunTests
     displayName: 'Run unit tests'
@@ -101,3 +120,22 @@ stages:
           releaseNotesFile: 'releasenotes.txt'
           destinationType: 'groups'
           distributionGroupId: '1a9dc800-5de5-4df1-bfb6-5ddc1177394a'
+          
+  - job: iOSBeta
+    displayName: 'Release iOS Beta'
+
+    steps:
+
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: iOSIpa
+      
+      - task: AppCenterDistribute@3
+        inputs:
+          serverEndpoint: 'App Center'
+          appSlug: 'Longimanus/Cryptollet'
+          appFile: '$(Pipeline.Workspace)/Cryptollet.iOS.ipa'
+          releaseNotesOption: 'file'
+          releaseNotesFile: 'releasenotes.txt'
+          destinationType: 'groups'
+          distributionGroupId: 'ad55920a-cc95-4f53-91d7-abc2776e37aa'
