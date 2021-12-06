@@ -14,7 +14,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>15.0</string>
+	<string>14.4</string>
 	<key>CFBundleDisplayName</key>
 	<string>Cryptollet</string>
 	<key>CFBundleIdentifier</key>
