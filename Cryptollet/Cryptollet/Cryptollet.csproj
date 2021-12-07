@@ -36,12 +36,12 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Common\Localization\Resources.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Common\Localization\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Common\Styles\AppColors.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
