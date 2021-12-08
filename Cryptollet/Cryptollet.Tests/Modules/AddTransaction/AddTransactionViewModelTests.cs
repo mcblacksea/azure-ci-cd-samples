@@ -57,7 +57,7 @@ namespace Cryptollet.Tests.Modules.AddTransaction
             AddTransactionViewModel viewModel = CreateAddTransactionViewModel();
 
             viewModel.AddTransactionCommand.Execute(null);
-
+            
             viewModel.Amount.Errors.First().Should().Be("Please enter amount greater than zero.");
         }
 
@@ -66,7 +66,7 @@ namespace Cryptollet.Tests.Modules.AddTransaction
         {
             AddTransactionViewModel viewModel = CreateAddTransactionViewModel();
             viewModel.Amount.Value = 1;
-
+            // Commentary: sake of test ci-cd
             viewModel.AddTransactionCommand.Execute(null);
 
             _mockDialog.VerifyThatDisplayAlertWasCalledWithMessage("Please select a coin.");
