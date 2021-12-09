@@ -125,7 +125,7 @@ namespace Cryptollet.Modules.AddTransaction
                     return;
                 }
                 IsBusy = true;
-                await SaveNewTransaction();
+              //  await SaveNewTransaction();
                 await _navigationService.PopAsync();
                 IsBusy = false;
             }
