@@ -125,7 +125,7 @@ namespace Cryptollet.Modules.AddTransaction
                     return;
                 }
                 IsBusy = true;
-              //  await SaveNewTransaction();
+                await SaveNewTransaction();
                 await _navigationService.PopAsync();
                 IsBusy = false;
             }
@@ -150,7 +150,7 @@ namespace Cryptollet.Modules.AddTransaction
                     Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
                     UserEmail = userId
                 };
-                await _transactionRepository.SaveAsync(transaction);
+                //await _transactionRepository.SaveAsync(transaction);
             }
             catch (Exception ex)
             {
