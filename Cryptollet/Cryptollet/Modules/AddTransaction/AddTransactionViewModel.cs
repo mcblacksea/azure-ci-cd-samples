@@ -107,40 +107,56 @@ namespace Cryptollet.Modules.AddTransaction
 
         private async Task AddTransaction()
         {
-            _amount.Validate();
-            if (!_amount.IsValid)
+            try
             {
-                return;
+                _amount.Validate();
+                if (!_amount.IsValid)
+                {
+                    return;
+                }
+
+                if (!EntriesAreCorrectlyPopulated())
+                {
+                    return;
+                }
+                if (SelectedCoin == null)
+                {
+                    await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
+                    return;
+                }
+                IsBusy = true;
+                await SaveNewTransaction();
+                await _navigationService.PopAsync();
+                IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+                await _dialogMessage.DisplayAlert("Error", ex.Message, "Ok");
             }
 
-            if (!EntriesAreCorrectlyPopulated())
-            {
-                return;
-            }
-            if (SelectedCoin == null)
-            {
-                await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
-                return;
-            }
-            IsBusy = true;
-            await SaveNewTransaction();
-            await _navigationService.PopAsync();
-            IsBusy = false;
         }
 
         private async Task SaveNewTransaction()
         {
-            var userId = _userPreferences.Get(Constants.USER_ID, string.Empty);
-            var transaction = new Transaction
+            try
             {
-                Amount = Amount.Value,
-                TransactionDate = TransactionDate,
-                Symbol = SelectedCoin.Symbol,
-                Status = IsDeposit ? Constants.TRANSACTION_DEPOSITED : Constants.TRANSACTION_WITHDRAWN,
-                Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
-                UserEmail = userId
-            };
-            await _transactionRepository.SaveAsync(transaction);
+                var userId = _userPreferences.Get(Constants.USER_ID, string.Empty);
+                var transaction = new Transaction
+                {
+                    Amount = Amount.Value,
+                    TransactionDate = TransactionDate,
+                    Symbol = SelectedCoin.Symbol,
+                    Status = IsDeposit ? Constants.TRANSACTION_DEPOSITED : Constants.TRANSACTION_WITHDRAWN,
+                    Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
+                    UserEmail = userId
+                };
+                await _transactionRepository.SaveAsync(transaction);
+            }
+            catch (Exception ex)
+            {
+                await _dialogMessage.DisplayAlert("Error", ex.Message, "Ok");
+            }
+        
         }
 
         private void AddValidations()
