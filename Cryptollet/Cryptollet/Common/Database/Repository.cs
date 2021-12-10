@@ -37,61 +37,23 @@ namespace Cryptollet.Common.Database
 
         public SQLiteAsyncConnection Database => lazyInitializer.Value;
 
-        public Repository()
-        {
-            InitializeAsync().SafeFireAndForget(false);
-        }
+        public Repository() => InitializeAsync().SafeFireAndForget(false);
 
         async Task InitializeAsync()
         {
-            if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(T).Name))
+            if (Database.TableMappings.Any(m => m.MappedType.Name == typeof(T).Name))
             {
-                await Database.CreateTableAsync(typeof(T)).ConfigureAwait(false);
+                return;
             }
+            await Database.CreateTableAsync(typeof(T)).ConfigureAwait(false);
         }
 
-        public Task<T> GetById(int id)
-        {
-            return Database.Table<T>().Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
+        public Task<T> GetById(int id) => Database.Table<T>().Where(x => x.Id == id).FirstOrDefaultAsync();
 
-        public Task<int> DeleteAsync(T item)
-        {
-            return Database.DeleteAsync(item);
-        }
+        public Task<int> DeleteAsync(T item) => Database.DeleteAsync(item);
 
-        public Task<List<T>> GetAllAsync()
-        {
-            try
-            {
-                return Database.Table<T>().ToListAsync();
-            }
-            catch (Exception exception)
-            {
+        public Task<List<T>> GetAllAsync() => Database.Table<T>().ToListAsync();
 
-                Crashes.TrackError(exception);
-            }
-           return Task.FromResult(new List<T>());
-        }
-
-        public Task<int> SaveAsync(T item)
-        {
-            try
-            {
-                if (item.Id != 0)
-                {
-                    return Database.UpdateAsync(item);
-                }
-                else
-                {
-                    return Database.InsertAsync(item);
-                }
-            }
-            catch (Exception exception)
-            {
-                Crashes.TrackError(exception);
-            }
-            return Task.FromResult(0);
-        }
+        public Task<int> SaveAsync(T item) => item.Id != 0 ? Database.UpdateAsync(item) : Database.InsertAsync(item);
     }
 }
