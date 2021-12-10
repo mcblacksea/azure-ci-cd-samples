@@ -72,19 +72,19 @@ namespace Cryptollet.Tests.Modules.AddTransaction
             _mockDialog.VerifyThatDisplayAlertWasCalledWithMessage("Please select a coin.");
         }
 
-        //[Fact]
-        //public void AddTransaction_saves_new_transaction()
-        //{
-        //    AddTransactionViewModel viewModel = CreateAddTransactionViewModel();
-        //    viewModel.Amount.Value = 1;
-        //    viewModel.SelectedCoin = Coin.GetAvailableAssets().First();
+        [Fact]
+        public void AddTransaction_saves_new_transaction()
+        {
+            AddTransactionViewModel viewModel = CreateAddTransactionViewModel();
+            viewModel.Amount.Value = 1;
+            viewModel.SelectedCoin = Coin.GetAvailableAssets().First();
 
-        //    viewModel.AddTransactionCommand.Execute(null);
+            viewModel.AddTransactionCommand.Execute(null);
 
-        //    viewModel.Amount.Errors.Should().BeEmpty();
+            viewModel.Amount.Errors.Should().BeEmpty();
 
-        //    _mockRepository.VerifyThatSaveAsyncWasCalled();
-        //}
+            _mockRepository.VerifyThatSaveAsyncWasCalled();
+        }
 
         private AddTransactionViewModel CreateAddTransactionViewModel()
         {

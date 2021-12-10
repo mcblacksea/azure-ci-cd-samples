@@ -107,39 +107,29 @@ namespace Cryptollet.Modules.AddTransaction
 
         private async Task AddTransaction()
         {
-            try
+            _amount.Validate();
+            if (!_amount.IsValid)
             {
-                _amount.Validate();
-                if (!_amount.IsValid)
-                {
-                    return;
-                }
-
-                if (!EntriesAreCorrectlyPopulated())
-                {
-                    return;
-                }
-                if (SelectedCoin == null)
-                {
-                    await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
-                    return;
-                }
-                IsBusy = true;
-                await SaveNewTransaction();
-                await _navigationService.PopAsync();
-                IsBusy = false;
-            }
-            catch (Exception ex)
-            {
-                await _dialogMessage.DisplayAlert("Error", ex.Message, "Ok");
+                return;
             }
 
+            if (!EntriesAreCorrectlyPopulated())
+            {
+                return;
+            }
+            if (SelectedCoin == null)
+            {
+                await _dialogMessage.DisplayAlert("Error", "Please select a coin.", "Ok");
+                return;
+            }
+            IsBusy = true;
+            await SaveNewTransaction();
+            await _navigationService.PopAsync();
+            IsBusy = false;
         }
 
         private async Task SaveNewTransaction()
         {
-            try
-            {
                 var userId = _userPreferences.Get(Constants.USER_ID, string.Empty);
                 var transaction = new Transaction
                 {
@@ -150,13 +140,7 @@ namespace Cryptollet.Modules.AddTransaction
                     Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
                     UserEmail = userId
                 };
-                //await _transactionRepository.SaveAsync(transaction);
-            }
-            catch (Exception ex)
-            {
-                await _dialogMessage.DisplayAlert("Error", ex.Message, "Ok");
-            }
-        
+                await _transactionRepository.SaveAsync(transaction);
         }
 
         private void AddValidations()
