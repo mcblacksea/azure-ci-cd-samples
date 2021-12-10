@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cryptollet.Common.Extensions;
+using Microsoft.AppCenter.Crashes;
 using SQLite;
 
 namespace Cryptollet.Common.Database
@@ -61,19 +62,36 @@ namespace Cryptollet.Common.Database
 
         public Task<List<T>> GetAllAsync()
         {
-            return Database.Table<T>().ToListAsync();
+            try
+            {
+                return Database.Table<T>().ToListAsync();
+            }
+            catch (Exception exception)
+            {
+
+                Crashes.TrackError(exception);
+            }
+           return Task.FromResult(new List<T>());
         }
 
         public Task<int> SaveAsync(T item)
         {
-            if (item.Id != 0)
+            try
             {
-                return Database.UpdateAsync(item);
+                if (item.Id != 0)
+                {
+                    return Database.UpdateAsync(item);
+                }
+                else
+                {
+                    return Database.InsertAsync(item);
+                }
             }
-            else
+            catch (Exception exception)
             {
-                return Database.InsertAsync(item);
+                Crashes.TrackError(exception);
             }
+            return Task.FromResult(0);
         }
     }
 }
