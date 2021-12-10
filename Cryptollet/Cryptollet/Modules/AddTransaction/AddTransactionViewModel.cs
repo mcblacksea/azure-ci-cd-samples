@@ -10,6 +10,7 @@ using Cryptollet.Common.Models;
 using Cryptollet.Common.Navigation;
 using Cryptollet.Common.Settings;
 using Cryptollet.Common.Validation;
+using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace Cryptollet.Modules.AddTransaction
@@ -91,7 +92,21 @@ namespace Cryptollet.Modules.AddTransaction
             set { _id = Uri.UnescapeDataString(value); }
         }
 
-        public ICommand AddTransactionCommand { get => new Command(async () => await AddTransaction(), () => IsNotBusy); }
+        public ICommand AddTransactionCommand
+        {
+            get => new Command(async () =>
+            {
+                try
+                {
+                    await AddTransaction();
+                }
+                catch (Exception exception)
+                {
+                    Crashes.TrackError(exception);
+                }
+
+            }, () => IsNotBusy);
+        }
         public ICommand BackCommand { get => new Command(async () => await GoBack()); }
 
         private async Task GoBack()
@@ -123,24 +138,38 @@ namespace Cryptollet.Modules.AddTransaction
                 return;
             }
             IsBusy = true;
-            await SaveNewTransaction();
+            try
+            {
+                await SaveNewTransaction();
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
             await _navigationService.PopAsync();
             IsBusy = false;
         }
 
         private async Task SaveNewTransaction()
         {
-                var userId = _userPreferences.Get(Constants.USER_ID, string.Empty);
-                var transaction = new Transaction
-                {
-                    Amount = Amount.Value,
-                    TransactionDate = TransactionDate,
-                    Symbol = SelectedCoin.Symbol,
-                    Status = IsDeposit ? Constants.TRANSACTION_DEPOSITED : Constants.TRANSACTION_WITHDRAWN,
-                    Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
-                    UserEmail = userId
-                };
+            var userId = _userPreferences.Get(Constants.USER_ID, string.Empty);
+            var transaction = new Transaction
+            {
+                Amount = Amount.Value,
+                TransactionDate = TransactionDate,
+                Symbol = SelectedCoin.Symbol,
+                Status = IsDeposit ? Constants.TRANSACTION_DEPOSITED : Constants.TRANSACTION_WITHDRAWN,
+                Id = string.IsNullOrEmpty(Id) ? 0 : int.Parse(Id),
+                UserEmail = userId
+            };
+            try
+            {
                 await _transactionRepository.SaveAsync(transaction);
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
         }
 
         private void AddValidations()
