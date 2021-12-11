@@ -1,3 +1,4 @@
 # azure-ci-cd-samples
 
-1. Update with Azure Functions deployement (CI / CD)
+1. CI - CD for Xamarin Forms app
+2. Azure DevOps + App Center interoperability
